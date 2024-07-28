@@ -28,7 +28,7 @@ def handle_test_args(args):
 
 
 def main():
-    print("Hello from __main__.py")
+    handle_test_args(sys.argv)
 
 
 if __name__ == "__main__":

@@ -11,23 +11,29 @@ APP = app
 
 # system-wide dirs
 HOME_DIR = $(HOME)
-PATH_BIN_DIR = $(HOME_DIR)/Documents/dev/.bin
-PATH_DEP_DIR = $(HOME_DIR)/Documents/dev/.dependencies/$(APP)
-PATH_CONF_DIR = $(HOME_DIR)/Documents/dev/.config/$(APP)
+PATH_BIN_DIR = $(HOME_DIR)/dev/.bin
+PATH_DEP_DIR = $(HOME_DIR)/dev/.dependencies/$(APP)
+PATH_CONF_DIR = $(HOME_DIR)/dev/.config/$(APP)
 
 PYTHON = python3
 PYFLAGS = -p "/opt/homebrew/bin/python3"
 
 .PHONY: build
-build:
+build: clean
 	echo "building $(APP)..."
 	mkdir -p $(BIN_DIR)
 	$(PYTHON) -m zipapp $(PYFLAGS) $(SRC_DIR) -o $(BIN_DIR)/$(APP)
 	chmod +x $(BIN_DIR)/$(APP)
 	echo "done."
 
+.PHONY: clean
+clean:
+	echo "cleaning local bin directory..."
+	rm -rf $(BIN_DIR)
+	echo "done."
+
 .PHONY: install
-install:
+install: uninstall
 	echo "cnstalling $(APP)..."
 	mkdir -p $(PATH_BIN_DIR)
 	mkdir -p $(PATH_DEP_DIR)

@@ -26,7 +26,7 @@ C_SRC_FILES += $(shell find $(SRC_DIR) -type f -name "*.c")
 OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CPP_SRC_FILES)) $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(C_SRC_FILES))
 
 .PHONY: build
-build: $(OBJ_FILES)
+build: cleanall $(OBJ_FILES)
 	echo "linking objects..."
 	$(LD) $(LDFLAGS) $(OBJ_FILES) -o $(BIN_DIR)/$(APP) $(LDLIBS)
 	echo "done!"
@@ -45,11 +45,13 @@ run:
 # Clean all object files
 .PHONY: clean
 clean:
+	echo "cleaning all object files..."
 	rm -rf $(OBJ_DIR)/*
 
 # Clean all object files and the binary
 .PHONY: cleanall
 cleanall:
+	echo "cleaning all object files and the binary..."
 	rm -rf $(OBJ_DIR)/*
 	rm -f $(BIN_DIR)/$(APP)
 	
@@ -61,7 +63,7 @@ P_PATH_CONFIG_DIR = $(HOME_DIR)/dev/.config/$(APP)
 
 # Move all binaries to respective directories
 .PHONY: install
-install:
+install: uninstall
 	echo "installing dependencies..."
 	mkdir -p $(P_PATH_DEP_DIR)
 	cp -r $(DEP_DIR)/* $(P_PATH_DEP_DIR) 2>/dev/null || :
