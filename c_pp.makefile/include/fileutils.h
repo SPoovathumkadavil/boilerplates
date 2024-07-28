@@ -81,10 +81,4 @@ void write_file(std::string filename, std::vector<std::string> lines)
     }
 };
 
-// read project.json for project name
-const std::string HOME_DIR = get_home_dir();
-const std::string PROJECT_NAME = "Boilerman";
-std::string DEPENDENCIES_DIR = HOME_DIR + "/Documents/dev/.dependencies/" + PROJECT_NAME;
-std::string CONFIG_DIR = HOME_DIR + "/Documents/dev/.config/" + PROJECT_NAME;
-
 #endif

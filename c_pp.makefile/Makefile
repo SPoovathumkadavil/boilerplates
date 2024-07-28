@@ -55,9 +55,9 @@ cleanall:
 	
 # PATH directories, where system wide binaries are stored
 HOME_DIR = /Users/$(USER)
-PATH_BIN_DIR = $(HOME_DIR)/Documents/dev/.bin
-P_PATH_DEP_DIR = $(HOME_DIR)/Documents/dev/.dependencies/$(APP)
-P_PATH_CONFIG_DIR = $(HOME_DIR)/Documents/dev/.config/$(APP)
+PATH_BIN_DIR = $(HOME_DIR)/dev/.bin
+P_PATH_DEP_DIR = $(HOME_DIR)/dev/.dependencies/$(APP)
+P_PATH_CONFIG_DIR = $(HOME_DIR)/dev/.config/$(APP)
 
 # Move all binaries to respective directories
 .PHONY: install
