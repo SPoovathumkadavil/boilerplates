@@ -26,6 +26,14 @@ build: clean
 	chmod +x $(BIN_DIR)/$(APP)
 	echo "done."
 
+.PHONY: init
+init:
+	echo "initializing project..."
+	mkdir -p $(BIN_DIR)
+	mkdir -p $(DEP_DIR)
+	mkdir -p $(CONF_DIR)
+	echo "done."
+
 .PHONY: clean
 clean:
 	echo "cleaning local bin directory..."

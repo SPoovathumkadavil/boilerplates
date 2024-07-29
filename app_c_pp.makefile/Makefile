@@ -31,6 +31,16 @@ build: cleanall $(OBJ_FILES)
 	$(LD) $(LDFLAGS) $(OBJ_FILES) -o $(BIN_DIR)/$(APP) $(LDLIBS)
 	echo "done!"
 
+# Initialize the project
+.PHONY: init
+init:
+	echo "initializing project..."
+	mkdir -p $(OBJ_DIR)
+	mkdir -p $(BIN_DIR)
+	mkdir -p $(CONFIG_DIR)
+	mkdir -p $(DEP_DIR)
+	echo "done!"
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
