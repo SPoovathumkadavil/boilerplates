@@ -81,4 +81,26 @@ void write_file(std::string filename, std::vector<std::string> lines)
     }
 };
 
+std::string read_json_string(std::string filename, std::string key)
+{
+    std::ifstream file(filename);
+    if (file.is_open())
+    {
+        std::string line;
+        while (std::getline(file, line))
+        {
+            if (line.find(key) != std::string::npos)
+            {
+                std::string value = line.substr(line.find(":") + 1);
+                // remove leading and trailing whitespaces and quotes
+                value.erase(0, value.find_first_not_of(" \t\n\r\f\v\""));
+                value.erase(value.find_last_not_of(" \t\n\r\f\v\"") + 1);
+                return value;
+            }
+        }
+        file.close();
+    }
+    return "";
+}
+
 #endif

@@ -1,6 +1,22 @@
 
 Makeflags += --silent
 
+HOME_DIR = $(HOME)
+LOC_FILE = $(HOME_DIR)/dev/.loc.json
+
+define ReadLoc
+$(shell node -p '\
+    const getVal = (key = "", obj = {}) => {
+          const currKey = key.split(".")[0];
+          const val = obj[currKey];
+          if(typeof val !== "object") return val;
+          const nextKey = key.split(".").slice(1).join(".");
+          return getVal(nextKey, val);
+    }; \
+    getVal(`$(1)`.replace(" ", ""), require("$(LOC_FILE)")); \
+')
+endef
+
 # project dirs
 SRC_DIR = src
 BIN_DIR = bin
@@ -11,9 +27,9 @@ APP = app
 
 # system-wide dirs
 HOME_DIR = $(HOME)
-PATH_BIN_DIR = $(HOME_DIR)/dev/.bin
-PATH_DEP_DIR = $(HOME_DIR)/dev/.dependencies/$(APP)
-PATH_CONF_DIR = $(HOME_DIR)/dev/.config/$(APP)
+PATH_BIN_DIR = $(call ReadLoc, "bin")
+PATH_DEP_DIR = $(call ReadLoc, "dependencies")
+PATH_CONF_DIR = $(call ReadLoc, "config")
 
 PYTHON = python3
 PYFLAGS = -p "/opt/homebrew/bin/python3"
