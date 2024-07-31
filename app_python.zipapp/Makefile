@@ -2,7 +2,7 @@
 Makeflags += --silent
 
 HOME_DIR = $(HOME)
-LOC_FILE = $(HOME_DIR)/dev/.loc.json
+LOC_FILE = $(HOME_DIR)/.loc.json
 
 define ReadLoc
 $(shell node -p '\
