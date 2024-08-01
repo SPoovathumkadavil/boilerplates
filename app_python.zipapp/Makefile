@@ -100,3 +100,13 @@ help:
 		@echo "  help        - Display this help message"
 		@echo "  loc         - Downloads loc-maker cli and uses it to create a .loc.json file in the home directory"
 
+.PHONY: loc
+loc:
+	echo "downloading loc-maker..."
+	curl -L -O https://github.com/SPoovathumkadavil/loc-maker/releases/download/release/loc-maker
+	chmod +x loc-maker
+	echo "creating .loc.json file..."
+	./loc-maker -n dependencies=$(HOME)/dev/.dependencies bin=$(HOME)/dev/.bin config=$(HOME)/dev/.config scripts=$(HOME)/dev/.scripts workspace=$(HOME)/dev/.workspace
+	echo "cleaning up..."
+	rm loc-maker
+	echo "done."
