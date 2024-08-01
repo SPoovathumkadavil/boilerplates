@@ -13,7 +13,11 @@ $(shell node -p '\
           const nextKey = key.split(".").slice(1).join(".");
           return getVal(nextKey, val);
     }; \
-    getVal(`$(1)`.replace(" ", ""), require("$(LOC_FILE)")); \
+		if (require("fs").existsSync("$(LOC_FILE)")) { \
+    	getVal(`$(1)`.replace(" ", ""), require("$(LOC_FILE)")); \
+		} else { \
+			"error"; \
+		} \
 ')
 endef
 
@@ -80,7 +84,12 @@ cleanall:
 	echo "cleaning all object files and the binary..."
 	rm -rf $(OBJ_DIR)/*
 	rm -f $(BIN_DIR)/$(APP)
-	
+
+# if install or uninstall is called, check if the directories exist
+ifneq ($(filter install uninstall, $(MAKECMDGOALS)),)
+$(if $(call ReadLoc, bin),,$(error ensure there is a .loc.json file in the home directory. if not run `make loc`))
+endif
+
 # PATH directories, where system wide binaries are stored
 PATH_BIN_DIR = $(call ReadLoc, bin)
 P_PATH_DEP_DIR = $(call ReadLoc, dependencies)
@@ -122,24 +131,10 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  build       - Compile the project"
-	@echo "  run         - Run the compiled binary"
 	@echo "  clean       - Clean all object files"
 	@echo "  cleanall    - Clean all object files and the binary"
-	@echo "  init        - Initialize the project"
+	@echo "  init        - Initialize the project (creates local directories)"
 	@echo "  install     - Install the project"
 	@echo "  uninstall   - Uninstall the project"
 	@echo "  help        - Display this help message"
-	@echo ""
-	@echo "Variables:"
-	@echo "  name        - Name of the project, set during initialization to change the project name"
-	@echo ""
-	@echo "Example:"
-	@echo "  make init name=my_project"
-	@echo "  make build"
-	@echo "  make run"
-	@echo "  make clean"
-	@echo "  make cleanall"
-	@echo "  make install"
-	@echo "  make uninstall"
-	@echo "  make help"
-	@echo ""
+	@echo "  loc         - Downloads loc-maker cli and uses it to create a .loc.json file in the home directory"

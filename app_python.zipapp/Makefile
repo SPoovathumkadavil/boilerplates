@@ -13,7 +13,11 @@ $(shell node -p '\
           const nextKey = key.split(".").slice(1).join(".");
           return getVal(nextKey, val);
     }; \
-    getVal(`$(1)`.replace(" ", ""), require("$(LOC_FILE)")); \
+		if (require("fs").existsSync("$(LOC_FILE)")) { \
+    	getVal(`$(1)`.replace(" ", ""), require("$(LOC_FILE)")); \
+		} else { \
+			"error"; \
+		} \
 ')
 endef
 
@@ -24,6 +28,11 @@ DEP_DIR = dependencies
 CONF_DIR = config
 
 APP = app
+
+# if install or uninstall is called, check if the directories exist
+ifneq ($(filter install uninstall, $(MAKECMDGOALS)),)
+$(if $(call ReadLoc, bin),,$(error ensure there is a .loc.json file in the home directory. if not run `make loc`))
+endif
 
 # system-wide dirs
 HOME_DIR = $(HOME)
@@ -77,3 +86,17 @@ uninstall:
 	rm -rf $(PATH_DEP_DIR)
 	rm -rf $(PATH_CONF_DIR)
 	echo "done."
+
+.PHONY: help
+help:
+	help:
+		@echo "Usage: make [target]"
+		@echo ""
+		@echo "Targets:"
+		@echo "  build       - Compile the project"
+		@echo "  clean       - Clean all object files"
+		@echo "  install     - Install the project"
+		@echo "  uninstall   - Uninstall the project"
+		@echo "  help        - Display this help message"
+		@echo "  loc         - Downloads loc-maker cli and uses it to create a .loc.json file in the home directory"
+
