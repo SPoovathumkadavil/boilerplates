@@ -16,7 +16,7 @@ CONFIG_DIR = config
 SRC_DIR = src
 INC_DIR = include
 
-APP = project
+APP = [[name]]
 
 # All compiler flags
 CXX = g++

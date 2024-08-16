@@ -14,7 +14,7 @@ BIN_DIR = bin
 DEP_DIR = dependencies
 CONF_DIR = config
 
-APP = app
+APP = [[name]]
 
 # if install or uninstall is called, check if the directories exist
 ifneq ($(filter install uninstall, $(MAKECMDGOALS)),)

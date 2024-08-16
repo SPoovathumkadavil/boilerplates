@@ -5,7 +5,7 @@ def get_home_dir():
     return os.path.expanduser("~")
 
 
-APP_NAME = "app"
+APP_NAME = "[[name]]"
 
 HOME_DIR = get_home_dir()
 LOC_FILE = os.path.join(HOME_DIR, ".loc.json")
