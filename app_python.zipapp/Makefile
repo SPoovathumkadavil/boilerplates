@@ -5,20 +5,7 @@ HOME_DIR = $(HOME)
 LOC_FILE = $(HOME_DIR)/.loc.json
 
 define ReadLoc
-$(shell node -p '\
-    const getVal = (key = "", obj = {}) => {
-          const currKey = key.split(".")[0];
-          const val = obj[currKey];
-          if(typeof val !== "object") return val;
-          const nextKey = key.split(".").slice(1).join(".");
-          return getVal(nextKey, val);
-    }; \
-		if (require("fs").existsSync("$(LOC_FILE)")) { \
-    	getVal(`$(1)`.replace(" ", ""), require("$(LOC_FILE)")); \
-		} else { \
-			"error"; \
-		} \
-')
+$(shell node -p "require('$(LOC_FILE)').$(1)")
 endef
 
 # project dirs
@@ -36,9 +23,9 @@ endif
 
 # system-wide dirs
 HOME_DIR = $(HOME)
-PATH_BIN_DIR = $(call ReadLoc, "bin")
-PATH_DEP_DIR = $(call ReadLoc, "dependencies")
-PATH_CONF_DIR = $(call ReadLoc, "config")
+PATH_BIN_DIR = $(call ReadLoc,bin)
+PATH_DEP_DIR = $(call ReadLoc,dependencies)/$(APP)
+PATH_CONF_DIR = $(call ReadLoc,config)/$(APP)
 
 PYTHON = python3
 PYFLAGS = -p "/opt/homebrew/bin/python3"
@@ -67,10 +54,10 @@ clean:
 
 .PHONY: install
 install: uninstall
-	echo "cnstalling $(APP)..."
+	echo "installing $(APP)..."
 	mkdir -p $(PATH_BIN_DIR)
 	mkdir -p $(PATH_DEP_DIR)
-	mkdir -p $(PATH_CONF_DIR)'
+	mkdir -p $(PATH_CONF_DIR)
 	echo "copying files..."
 	cp -r $(BIN_DIR)/$(APP) $(PATH_BIN_DIR) 2>/dev/null || :
 	cp -r $(DEP_DIR)/* $(PATH_DEP_DIR) 2>/dev/null || :
