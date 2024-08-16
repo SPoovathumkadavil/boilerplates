@@ -1,5 +1,5 @@
 
-Makeflags += --silent
+MAKEFLAGS += --silent
 
 HOME_DIR = $(HOME)
 LOC_FILE = $(HOME_DIR)/.loc.json
