@@ -46,6 +46,11 @@ init:
 	mkdir -p $(CONF_DIR)
 	echo "done."
 
+.PHONY: deps
+deps:
+	echo "downloading dependencies into the source directory"
+	$(PYTHON) -m pip install -r requirements.txt --target $(SRC_DIR)
+
 .PHONY: clean
 clean:
 	echo "cleaning local bin directory..."

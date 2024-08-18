@@ -1,35 +1,13 @@
 import boilerutils
-import sys
-import os
+import click
 
-
-def handle_test_args(args):
-    for arg in range(len(args)):
-        if args[arg] == "-t" or args[arg] == "--test":
-            boilerutils.DEP_DIR = "dependencies"
-            boilerutils.CONF_DIR = "config"
-        if args[arg] == "-d" or args[arg] == "--dependencies":
-            if arg + 1 < len(args):
-                if os.path.exists(args[arg + 1]):
-                    boilerutils.DEP_DIR = args[arg + 1]
-                else:
-                    print("Provided directory for dependencies does not exist.")
-            else:
-                print("No directory provided for dependencies.")
-        if args[arg] == "-c" or args[arg] == "--config":
-            if arg + 1 < len(args):
-                # check if the directory exists
-                if os.path.exists(args[arg + 1]):
-                    boilerutils.CONF_DIR = args[arg + 1]
-                else:
-                    print("Provided directory for config does not exist.")
-            else:
-                print("No directory provided for config.")
-
-
-def main():
-    handle_test_args(sys.argv)
-
+@click.group()
+@click.option("-t", "--test", is_flag=True, default=False, help="sets test directories for dependencies and config")
+def main(test):
+    # test mode
+    if test:
+        boilerutils.TEST = True
+    boilerutils.update()
 
 if __name__ == "__main__":
     main()
