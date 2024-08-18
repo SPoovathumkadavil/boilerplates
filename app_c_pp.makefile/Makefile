@@ -9,7 +9,7 @@ $(shell node -p "require('$(LOC_FILE').$(1)")
 endef
 
 # Project directories, where the local project files are stored
-DEP_DIR = dependencies
+LIB_DIR = library
 OBJ_DIR = obj
 BIN_DIR = bin
 CONFIG_DIR = config
@@ -45,7 +45,7 @@ init:
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(BIN_DIR)
 	mkdir -p $(CONFIG_DIR)
-	mkdir -p $(DEP_DIR)
+	mkdir -p $(LIB_DIR)
 	echo "done!"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -79,15 +79,15 @@ endif
 
 # PATH directories, where system wide binaries are stored
 PATH_BIN_DIR = $(call ReadLoc,bin)
-P_PATH_DEP_DIR = $(call ReadLoc,dependencies)/$(APP)
+P_PATH_LIB_DIR = $(call ReadLoc,library)/$(APP)
 P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(APP)
 
 # Move all binaries to respective directories
 .PHONY: install
 install: uninstall
-	echo "installing dependencies..."
-	mkdir -p $(P_PATH_DEP_DIR)
-	cp -r $(DEP_DIR)/* $(P_PATH_DEP_DIR) 2>/dev/null || :
+	echo "installing library..."
+	mkdir -p $(P_PATH_LIB_DIR)
+	cp -r $(LIB_DIR)/* $(P_PATH_LIB_DIR) 2>/dev/null || :
 	echo "installing binaries..."
 	mkdir -p $(PATH_BIN_DIR)
 	cp -r $(BIN_DIR)/* $(PATH_BIN_DIR) 2>/dev/null || :
@@ -95,15 +95,15 @@ install: uninstall
 	mkdir -p $(P_PATH_CONFIG_DIR)
 	cp -r $(CONFIG_DIR)/* $(P_PATH_CONFIG_DIR) 2>/dev/null || :
 	echo "removing unnessesary path directories..."
-	rmdir $(P_PATH_DEP_DIR) 2>/dev/null || :
+	rmdir $(P_PATH_LIB_DIR) 2>/dev/null || :
 	rmdir $(P_PATH_CONFIG_DIR) 2>/dev/null || :
 	echo "done!"
 
 # Remove all project files from respective sys-wide directories
 .PHONY: uninstall
 uninstall:
-	echo "uninstalling dependencies..."
-	rm -rf $(P_PATH_DEP_DIR)
+	echo "uninstalling library..."
+	rm -rf $(P_PATH_LIB_DIR)
 	echo "uninstalling config files..."
 	rm -rf $(P_PATH_CONFIG_DIR)
 	for file in $(BIN_DIR)/*; do \
@@ -126,7 +126,7 @@ help:
 	@echo "  help        - Display this help message"
 	@echo "  loc         - Downloads loc-maker cli and uses it to create a .loc.json file in the home directory"
 
-TARGET_DEP = $(HOME)/dev/.dependencies
+TARGET_LIB = $(HOME)/dev/.library
 TARGET_CONF = $(HOME)/dev/.config 
 TARGET_BIN = $(HOME)/dev/.bin 
 TARGET_SCRIPTS = $(HOME)/dev/.scripts 
@@ -138,7 +138,7 @@ loc:
 	curl -L -O https://github.com/SPoovathumkadavil/loc-maker/releases/download/release/loc-maker
 	chmod +x loc-maker
 	echo "creating .loc.json file..."
-	./loc-maker -n dependencies=$(TARGET_DEP) bin=$(TARGET_BIN) config=$(TARGET_CONF) scripts=$(TARGET_SCRIPTS) workspace=$(TARGET_WORK)
+	./loc-maker -n library=$(TARGET_LIB) bin=$(TARGET_BIN) config=$(TARGET_CONF) scripts=$(TARGET_SCRIPTS) workspace=$(TARGET_WORK)
 	echo "cleaning up..."
 	rm loc-maker
 	echo "done."

@@ -12,7 +12,7 @@ void handle_test_args(int argc, char *argv[])
 		{
 			if (i + 1 < argc)
 			{
-				DEPENDENCIES_DIR = argv[i + 1];
+				LIBRARY_DIR = argv[i + 1];
 			}
 		}
 		if (std::string(argv[i]) == "-c")
@@ -25,7 +25,7 @@ void handle_test_args(int argc, char *argv[])
 		// alternatively use -t to set test mode and change dirs automatically
 		if (std::string(argv[i]) == "-t")
 		{
-			DEPENDENCIES_DIR = "dependencies";
+			LIBRARY_DIR = "dependencies";
 			CONFIG_DIR = "config";
 		}
 	}
