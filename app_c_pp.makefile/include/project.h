@@ -1,5 +1,5 @@
-#ifndef boilerutils_h
-#define boilerutils_h
+#ifndef project_h
+#define project_h
 
 #include <string>
 #include "fileutils.h"

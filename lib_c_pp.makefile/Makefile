@@ -22,20 +22,19 @@ $(if $(call ReadLoc, bin),,$(error ensure there is a .loc.json file in the home 
 endif
 
 # PATH directories, where system wide binaries are stored
-PATH_BIN_DIR = $(call ReadLoc,bin)
 PATH_DYNAMIC_LIB_DIR = $(call ReadLoc,library)/dynamic
-P_PATH_LIB_DIR = $(call ReadLoc,library)/$(APP)
-P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(APP)
+P_PATH_LIB_DIR = $(call ReadLoc,library)/$(LIB)
+P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(LIB)
 
-APP = [[name]]
+LIB = [[name]]
 
 # All compiler flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I$(INC_DIR) -g
+CXXFLAGS = -fPIC -std=c++17 -Wall -Wextra -Werror -I$(INC_DIR) -g
 C = gcc
-CFLAGS = -std=c11 -Wall -Wextra -Werror -I$(INC_DIR) -g
+CFLAGS = -fPIC -std=c11 -Wall -Wextra -Werror -I$(INC_DIR) -g
 LD = g++
-LDFLAGS = -I$(INC_DIR)
+LDFLAGS = -shared -I$(INC_DIR)
 LDLIBS = -L$(PATH_DYNAMIC_LIB_DIR) -lm
 
 # All compilable files
@@ -46,7 +45,8 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(CPP_SRC_FILES)) $(pat
 .PHONY: build
 build: cleanall $(OBJ_FILES)
 	echo "linking objects..."
-	$(LD) $(LDFLAGS) $(OBJ_FILES) -o $(BIN_DIR)/$(APP) $(LDLIBS)
+	echo "$(PATH_DYNAMIC_LIB_DIR)"
+	$(LD) $(LDFLAGS) $(OBJ_FILES) -o $(BIN_DIR)/$(LIB) $(LDLIBS)
 	echo "done!"
 
 # Initialize the project
@@ -68,7 +68,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # Run the compiled binary
 .PHONY: run
 run:
-	./$(BIN_DIR)/$(APP)
+	./$(BIN_DIR)/$(LIB)
 
 # Clean all object files
 .PHONY: clean
@@ -81,7 +81,7 @@ clean:
 cleanall:
 	echo "cleaning all object files and the binary..."
 	rm -rf $(OBJ_DIR)/*
-	rm -f $(BIN_DIR)/$(APP)
+	rm -f $(BIN_DIR)/$(LIB)
 
 # Move all binaries to respective directories
 .PHONY: install
@@ -89,9 +89,9 @@ install: uninstall
 	echo "installing library..."
 	mkdir -p $(P_PATH_LIB_DIR)
 	cp -r $(LIB_DIR)/* $(P_PATH_LIB_DIR) 2>/dev/null || :
-	echo "installing binaries..."
-	mkdir -p $(PATH_BIN_DIR)
-	cp -r $(BIN_DIR)/* $(PATH_BIN_DIR) 2>/dev/null || :
+	echo "installing cpp dynamic library..."
+	mkdir -p $(PATH_DYNAMIC_LIB_DIR)
+	cp -r $(BIN_DIR)/* $(PATH_DYNAMIC_LIB_DIR) 2>/dev/null || :
 	echo "installing config files..."
 	mkdir -p $(P_PATH_CONFIG_DIR)
 	cp -r $(CONFIG_DIR)/* $(P_PATH_CONFIG_DIR) 2>/dev/null || :
@@ -108,8 +108,8 @@ uninstall:
 	echo "uninstalling config files..."
 	rm -rf $(P_PATH_CONFIG_DIR)
 	for file in $(BIN_DIR)/*; do \
-		echo "uninstalling binary (if exists): $$file"; \
-		rm -f $(PATH_BIN_DIR)/$$(basename $$file); \
+		echo "uninstalling dynamic library (if exists): $$file"; \
+		rm -f $(PATH_DYNAMIC_LIB_DIR)/$$(basename $$file); \
 	done
 	echo "Done!"
 
