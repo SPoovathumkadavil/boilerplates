@@ -5,7 +5,7 @@ HOME_DIR = $(HOME)
 LOC_FILE = $(HOME_DIR)/.loc.json
 
 define ReadLoc
-$(shell node -p "require('$(LOC_FILE)').$(1)")
+$(shell node -p "require('$(LOC_FILE').$(1)")
 endef
 
 # Project directories, where the local project files are stored
@@ -16,17 +16,6 @@ CONFIG_DIR = config
 SRC_DIR = src
 INC_DIR = include
 
-# if install or uninstall is called, check if the directories exist
-ifneq ($(filter install uninstall, $(MAKECMDGOALS)),)
-$(if $(call ReadLoc, bin),,$(error ensure there is a .loc.json file in the home directory. if not run `make loc`))
-endif
-
-# PATH directories, where system wide binaries are stored
-PATH_BIN_DIR = $(call ReadLoc,bin)
-PATH_DYNAMIC_LIB_DIR = $(call ReadLoc,library)/dynamic
-P_PATH_LIB_DIR = $(call ReadLoc,library)/$(APP)
-P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(APP)
-
 APP = [[name]]
 
 # All compiler flags
@@ -35,8 +24,8 @@ CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I$(INC_DIR) -g
 C = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Werror -I$(INC_DIR) -g
 LD = g++
-LDFLAGS = -I$(INC_DIR)
-LDLIBS = -L$(PATH_DYNAMIC_LIB_DIR) -lm
+LDFLAGS = -L/usr/local/lib -I$(INC_DIR)
+LDLIBS = -lm
 
 # All compilable files
 CPP_SRC_FILES = $(shell find $(SRC_DIR) -type f -name "*.cpp")
@@ -82,6 +71,16 @@ cleanall:
 	echo "cleaning all object files and the binary..."
 	rm -rf $(OBJ_DIR)/*
 	rm -f $(BIN_DIR)/$(APP)
+
+# if install or uninstall is called, check if the directories exist
+ifneq ($(filter install uninstall, $(MAKECMDGOALS)),)
+$(if $(call ReadLoc, bin),,$(error ensure there is a .loc.json file in the home directory. if not run `make loc`))
+endif
+
+# PATH directories, where system wide binaries are stored
+PATH_BIN_DIR = $(call ReadLoc,bin)
+P_PATH_LIB_DIR = $(call ReadLoc,library)/$(APP)
+P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(APP)
 
 # Move all binaries to respective directories
 .PHONY: install

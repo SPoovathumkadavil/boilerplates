@@ -1,7 +1,7 @@
 #include "main.h"
 
 #include <iostream>
-#include "project.h"
+#include "boilerutils.h"
 
 void handle_test_args(int argc, char *argv[])
 {
@@ -25,7 +25,7 @@ void handle_test_args(int argc, char *argv[])
 		// alternatively use -t to set test mode and change dirs automatically
 		if (std::string(argv[i]) == "-t")
 		{
-			LIBRARY_DIR = "library";
+			LIBRARY_DIR = "dependencies";
 			CONFIG_DIR = "config";
 		}
 	}
