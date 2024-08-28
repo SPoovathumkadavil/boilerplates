@@ -13,31 +13,9 @@ project(
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
-# ---- Declare library ----
+# ---- source files ----
 
-add_library(
-    [[name]]_lib OBJECT
-    src/lib.cpp
-)
-
-target_include_directories(
-    [[name]]_lib ${warning_guard}
-    PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>"
-)
-
-target_compile_features([[name]]_lib PUBLIC cxx_std_17)
-
-# ---- Declare executable ----
-
-add_executable([[name]]_exe src/main.cpp)
-add_executable([[name]]::exe ALIAS [[name]]_exe)
-
-set_property(TARGET [[name]]_exe PROPERTY OUTPUT_NAME [[name]])
-
-target_compile_features([[name]]_exe PRIVATE cxx_std_17)
-
-target_link_libraries([[name]]_exe PRIVATE [[name]]_lib)
+include(src/sources.cmake)
 
 # ---- Install rules ----
 
