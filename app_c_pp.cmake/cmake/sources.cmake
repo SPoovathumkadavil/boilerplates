@@ -1,6 +1,7 @@
-# ---- Declare library ----
 
-file(GLOB_RECURSE [[name]]_lib_sources CONFIGURE_DEPENDS "src/[[name]]_lib/*.cpp")
+# ---- declare library ----
+
+file(GLOB_RECURSE [[name]]_lib_sources CONFIGURE_DEPENDS "src/[[name]]-lib/*.cpp")
 
 add_library(
     [[name]]_lib OBJECT
@@ -10,12 +11,12 @@ add_library(
 target_include_directories(
     [[name]]_lib ${warning_guard}
     PUBLIC
-    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/[[name]]_lib>"
+    "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/[[name]]-lib>"
 )
 
 target_compile_features([[name]]_lib PUBLIC cxx_std_17)
 
-# ---- Declare executable ----
+# ---- declare executable ----
 
 file(GLOB_RECURSE [[name]]_sources CONFIGURE_DEPENDS "src/[[name]]/*.cpp")
 
@@ -33,3 +34,7 @@ target_include_directories(
     PUBLIC
     "\$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/[[name]]>"
 )
+
+# ---- add external libraries ----
+
+include(cmake/external-lib.cmake)

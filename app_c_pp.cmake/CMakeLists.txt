@@ -15,7 +15,7 @@ include(cmake/variables.cmake)
 
 # ---- source files ----
 
-include(src/sources.cmake)
+include(cmake/sources.cmake)
 
 # ---- Install rules ----
 
