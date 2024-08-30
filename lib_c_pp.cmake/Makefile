@@ -8,7 +8,7 @@ define ReadLoc
 $(shell node -p "require('$(LOC_FILE)').$(1)")
 endef
 
-APP = [[name]]
+LIB = [[name]]
 
 BUILD_DIR = build
 LIB_DIR = library
@@ -19,11 +19,6 @@ build: clean
 	echo "building release ..."
 	cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 	cmake --build build
-
-.PHONY: run
-run:
-	echo "running $(APP)...\n"
-	./$(BUILD_DIR)/$(APP)
 
 .PHONY: dev
 dev: clean
@@ -55,19 +50,18 @@ $(if $(call ReadLoc, bin),,$(error ensure there is a .loc.json file in the home 
 endif
 
 # PATH directories, where system wide binaries are stored
-PATH_BIN_DIR = $(call ReadLoc,bin)
-P_PATH_LIB_DIR = $(call ReadLoc,library)/$(APP)
-P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(APP)
+PATH_PREFIX = $(call ReadLoc,library)/libs
+P_PATH_LIB_DIR = $(call ReadLoc,library)/$(LIB)
+P_PATH_CONFIG_DIR = $(call ReadLoc,config)/$(LIB)
 
 # Move all binaries to respective directories
 .PHONY: install
 install: uninstall
-	echo "installing library..."
+	echo "installing project library..."
 	mkdir -p $(P_PATH_LIB_DIR)
 	cp -r $(LIB_DIR)/* $(P_PATH_LIB_DIR) 2>/dev/null || :
-	echo "installing binaries..."
-	mkdir -p $(PATH_BIN_DIR)
-	cp -r $(BUILD_DIR)/$(APP) $(PATH_BIN_DIR) 2>/dev/null || :
+	echo "installing lib..."
+	cmake --install $(BUILD_DIR) --prefix $(PATH_PREFIX)
 	echo "installing config files..."
 	mkdir -p $(P_PATH_CONFIG_DIR)
 	cp -r $(CONFIG_DIR)/* $(P_PATH_CONFIG_DIR) 2>/dev/null || :
@@ -79,12 +73,13 @@ install: uninstall
 # Remove all project files from respective sys-wide directories
 .PHONY: uninstall
 uninstall:
-	echo "uninstalling library..."
+	echo "uninstalling project library..."
 	rm -rf $(P_PATH_LIB_DIR)
 	echo "uninstalling config files..."
 	rm -rf $(P_PATH_CONFIG_DIR)
-	echo "uninstalling binary (if exists)"
-	rm -f $(PATH_BIN_DIR)/$(APP)
+	echo "uninstalling lib (if exists)"
+	cat $(BUILD_DIR)/install_manifest.txt | xargs rm -f
+	find $(PATH_PREFIX) -name "*$(LIB)*" -type d -exec rm -rf {} \; 2>/dev/null || :
 	echo "Done!"
 
 .PHONY: help
@@ -95,13 +90,12 @@ help:
 	echo "  test  - Run tests"
 	echo "  clean - Clean the build directory"
 	echo "  init  - Create supplemental development directories"
-	echo "  run   - Run the application"
-	echo "  install - Install the application"
-	echo "  uninstall - Uninstall the application"
+	echo "  install - Install the library"
+	echo "  uninstall - Uninstall the library"
 	echo "  help  - Display this help message"
 
 TARGET_LIB = $(HOME)/dev/.library
-TARGET_CONF = $(HOME)/dev/.config 
+TARGET_CONF = $(HOME)/dev/.config
 TARGET_BIN = $(HOME)/dev/.bin 
 TARGET_SCRIPTS = $(HOME)/dev/.scripts 
 TARGET_WORK = $(HOME)/dev/workspace

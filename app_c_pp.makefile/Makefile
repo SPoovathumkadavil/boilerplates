@@ -5,7 +5,7 @@ HOME_DIR = $(HOME)
 LOC_FILE = $(HOME_DIR)/.loc.json
 
 define ReadLoc
-$(shell node -p "require('$(LOC_FILE').$(1))")
+$(shell node -p "require('$(LOC_FILE)').$(1)")
 endef
 
 # Project directories, where the local project files are stored

@@ -42,3 +42,7 @@ target_include_directories(
 )
 
 target_compile_features([[name]]_[[name]] PUBLIC cxx_std_17)
+
+# ---- external libs ----
+
+include(cmake/external-lib.cmake)
