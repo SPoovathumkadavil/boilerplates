@@ -14,10 +14,21 @@ BUILD_DIR = build
 LIB_DIR = library
 CONFIG_DIR = config
 
+SHARED = OFF # change to ON for building shared libs
+
 .PHONY: build
 build: clean
 	echo "building release ..."
-	cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
+	if [[ "$(SHARED)" == "ON" ]]; then \
+		echo "compiling shared library ..."
+		cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D BUILD_SHARED_LIBS=OFF; \
+	elif [[ "$(SHARED)" == "OFF" ]]; then \
+		echo "compiling static library"; \
+		cmake -S . -B build -D CMAKE_BUILD_TYPE=Release -D BUILD_SHARED_LIBS=ON; \
+	else \
+		echo "set SHARED variable to ON or OFF to select library type."; \
+		exit 1; \
+	fi
 	cmake --build build
 
 .PHONY: dev
