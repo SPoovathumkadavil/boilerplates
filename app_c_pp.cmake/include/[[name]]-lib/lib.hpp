@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <fetalib/directories.hpp>
 
 /**
  * @brief The core implementation of the executable
@@ -18,4 +19,5 @@ struct library
   library();
 
   std::string name;
+  feta::_proj_dirs project_directories;
 };

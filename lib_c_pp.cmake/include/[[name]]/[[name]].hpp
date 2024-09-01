@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <fetalib/directories.hpp>
 
 #include "[[name]]/[[name]]_export.hpp"
 
@@ -67,4 +68,5 @@ public:
 private:
   [%C[name]%C]_SUPPRESS_C4251
   std::string m_name;
+  feta::_proj_dirs project_directories;
 };

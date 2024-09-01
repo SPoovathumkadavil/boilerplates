@@ -1,8 +1,8 @@
 # ---- local ----
 
-# find_package(testlib REQUIRED)
-# target_link_libraries(libtester_lib testlib::testlib)
-# message("-- Package \"testlib\" found: ${testlib_FOUND}")
+find_package(fetalib REQUIRED)
+message("-- Package \"fetalib\" found: ${fetalib_FOUND}")
+target_link_libraries([[name]]_[[name]] fetalib::fetalib)
 
 # ---- remote ----
 
@@ -14,7 +14,7 @@
 #     GIT_REPOSITORY https://github.com/raysan5/raylib.git
 # )
 # FetchContent_MakeAvailable(raylib)
-# target_link_libraries([[name]]_lib raylib)
+# target_link_libraries([[name]]_[[name]] raylib)
 
 # ---- fmt ----
 # FetchContent_Declare(
@@ -22,4 +22,4 @@
 #   GIT_REPOSITORY https://github.com/fmtlib/fmt
 #   GIT_TAG        e69e5f977d458f2650bb346dadf2ad30c5320281) # 10.2.1
 # FetchContent_MakeAvailable(fmt)
-# target_link_libraries([[name]]_lib fmt::fmt)
+# target_link_libraries([[name]]_[[name]] fmt::fmt)
