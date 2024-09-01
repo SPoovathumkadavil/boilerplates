@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.16)
 
 project([[name]]Tests LANGUAGES CXX)
 
@@ -7,19 +7,20 @@ include(../cmake/folders.cmake)
 
 # ---- Dependencies ----
 
-if(PROJECT_IS_TOP_LEVEL)
-  find_package([[name]] REQUIRED)
-  enable_testing()
-endif()
+enable_testing()
 
 # ---- Tests ----
 
-file(GLOB_RECURSE [[name]]_test_sources CONFIGURE_DEPENDS "src/*.cpp")
+file(GLOB_RECURSE [[name]]_test_sources "src/*.cpp")
 add_executable([[name]]_test ${[[name]]_test_sources})
-target_link_libraries([[name]]_test PRIVATE [[name]]::[[name]])
+target_link_libraries([[name]]_test 
+  PRIVATE
+  GTest::gtest_main
+  [[name]]::[[name]])
 target_compile_features([[name]]_test PRIVATE cxx_std_17)
 
-add_test(NAME [[name]]_test COMMAND [[name]]_test)
+include(GoogleTest)
+gtest_discover_tests([[name]]_test)
 
 # ---- End-of-file commands ----
 

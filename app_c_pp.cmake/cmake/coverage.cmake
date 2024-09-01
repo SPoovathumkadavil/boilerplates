@@ -1,6 +1,6 @@
 # ---- Variables ----
 
-# We use variables separate from what CTest uses, because those have
+# We use variables separate from what GTest uses, because those have
 # customization issues
 set(
     COVERAGE_TRACE_COMMAND

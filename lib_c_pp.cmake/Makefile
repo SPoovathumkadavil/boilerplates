@@ -11,6 +11,7 @@ endef
 LIB = [[name]]
 
 BUILD_DIR = build
+BUILD_DEV_DIR = $(BUILD_DIR)/dev
 LIB_DIR = library
 CONFIG_DIR = config
 
@@ -33,15 +34,15 @@ build: clean
 	cmake --build build
 
 .PHONY: dev
-dev: clean
+dev: 
 	echo "building dev"
 	cmake --preset=dev
 	cmake --build --preset=dev
 
 .PHONY: test
-test: dev
+test:
 	echo "running test"
-	ctest --preset=dev
+	$(BUILD_DEV_DIR)/test/$(LIB)_test
 
 .PHONY: clean
 clean:

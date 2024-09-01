@@ -11,6 +11,7 @@ endef
 APP = [[name]]
 
 BUILD_DIR = build
+BUILD_DEV_DIR = $(BUILD_DIR)/dev
 LIB_DIR = library
 CONFIG_DIR = config
 
@@ -20,21 +21,21 @@ build: clean
 	cmake -S . -B build -D CMAKE_BUILD_TYPE=Release
 	cmake --build build
 
-.PHONY: run
-run:
-	echo "running $(APP)...\n"
-	./$(BUILD_DIR)/$(APP)
-
 .PHONY: dev
-dev: clean
+dev:
 	echo "building dev"
 	cmake --preset=dev
 	cmake --build --preset=dev
 
+.PHONY: run
+run:
+	echo "running $(APP)...\n"
+	./$(BUILD_DEV_DIR)/$(APP)
+
 .PHONY: test
-test: dev
+test: 
 	echo "running test"
-	ctest --preset=dev
+	$(BUILD_DEV_DIR)/test/$(APP)_test
 
 .PHONY: clean
 clean:

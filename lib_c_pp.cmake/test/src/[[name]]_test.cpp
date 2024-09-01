@@ -1,10 +1,20 @@
-#include <string>
-
 #include "[[name]]/[[name]].hpp"
+#include <gtest/gtest.h>
 
-auto main() -> int
+TEST(LibTests, TestNameIsRight_Zero)
 {
   auto const exported = exported_class {};
+  ASSERT_EQ(exported.name(), "[[name]]"); // teehee
+}
 
-  return std::string("[[name]]") == exported.name() ? 0 : 1;
+TEST(LibTests, TestNameIsRight_One)
+{
+  auto const exported = exported_class {};
+  ASSERT_NE(exported.name(), "not [[name]]");
+}
+
+int main(int argc, char** argv)
+{
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
 }
