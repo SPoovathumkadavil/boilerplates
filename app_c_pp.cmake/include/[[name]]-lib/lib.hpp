@@ -18,6 +18,7 @@ struct library
    */
   library();
 
-  std::string name;
-  feta::_proj_dirs project_directories;
+  std::string _name;
+  bool _test;
+  std::directories _feta_dir; // project directories accesable through proj_dirs() method
 };

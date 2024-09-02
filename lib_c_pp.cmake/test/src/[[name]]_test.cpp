@@ -4,13 +4,13 @@
 
 TEST(LibTests, TestNameIsRight_Zero)
 {
-  auto const exported = exported_class {};
+  auto exported = exported_class {};
   ASSERT_EQ(exported.name(), std::string("[[name]]")); // teehee
 }
 
 TEST(LibTests, TestNameIsRight_One)
 {
-  auto const exported = exported_class {};
+  auto exported = exported_class {};
   ASSERT_NE(exported.name(), std::string("not [[name]]"));
 }
 

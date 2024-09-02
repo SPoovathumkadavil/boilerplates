@@ -47,11 +47,6 @@
  * they also solve some other problems that make them worth the time invested.
  */
 
-/**
- * @brief Reports the name of the library
- *
- * Please see the note above for considerations when creating shared libraries.
- */
 class [%C[name]%C]_EXPORT exported_class
 {
 public:
@@ -60,13 +55,12 @@ public:
    */
   exported_class();
 
-  /**
-   * @brief Returns a non-owning pointer to the string stored in this class
-   */
-  auto name() const -> char const*;
+  std::string name() { return _name; };
+  feta::directories *feta_dirs() { return &_feta_dirs; };
 
 private:
-  [%C[name]%C]_SUPPRESS_C4251
-  std::string m_name;
-  feta::_proj_dirs project_directories;
+  std::string _name;
+  bool _test;
+  feta::directories _feta_dirs;
 };
+
