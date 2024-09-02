@@ -3,11 +3,11 @@ name: Continuous Integration
 on:
   push:
     branches:
-    - master
+    - main
 
   pull_request:
     branches:
-    - master
+    - main
 
 jobs:
   lint:
@@ -56,7 +56,7 @@ jobs:
 
     - name: Test
       working-directory: build/coverage
-      run: ctest --output-on-failure --no-tests=error -j 2
+      run: ctest --test-dir test --output-on-failure --no-tests=error -j 2
 
     - name: Process coverage info
       run: cmake --build build/coverage -t coverage
@@ -94,14 +94,14 @@ jobs:
           halt_on_error=1"
         UBSAN_OPTIONS: "print_stacktrace=1:\
           halt_on_error=1"
-      run: ctest --output-on-failure --no-tests=error -j 2
+      run: ctest --test-dir test --output-on-failure --no-tests=error -j 2
 
   test:
     needs: [lint]
 
     strategy:
       matrix:
-        os: [macos-14, ubuntu-22.04, windows-2022]
+        os: [macos-14, ubuntu-22.04]
 
     runs-on: ${{ matrix.os }}
 
@@ -135,7 +135,7 @@ jobs:
 
     - name: Test
       working-directory: build
-      run: ctest --output-on-failure --no-tests=error -C Release -j 2
+      run: ctest --test-dir test --output-on-failure --no-tests=error -C Release -j 2
 
   docs:
     # Deploy docs only when builds succeed

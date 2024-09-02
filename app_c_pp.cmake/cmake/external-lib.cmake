@@ -1,7 +1,5 @@
 # ---- local ----
 
-list(APPEND CMAKE_PREFIX_PATH "/Users/sally/dev/.library/libs")
-
 find_package(fetalib REQUIRED)
 message("-- Package \"fetalib\" found: ${fetalib_FOUND}")
 target_link_libraries([[name]]_lib fetalib::fetalib)
