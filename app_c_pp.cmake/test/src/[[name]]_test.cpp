@@ -1,16 +1,10 @@
 #include "lib.hpp"
 #include <gtest/gtest.h>
+#include <filesystem>
 
-TEST(LibTests, TestNameIsRight_Zero)
+TEST(LibTests, FileExistsTest)
 {
-  auto const lib = library {};
-  ASSERT_EQ(lib._name, "[[name]]");
-}
-
-TEST(LibTests, TestNameIsRight_One)
-{
-  auto const lib = library {};
-  ASSERT_NE(lib._name, "not [[name]]");
+  ASSERT_TRUE(std::filesystem::exists("resources/test.txt"));
 }
 
 int main(int argc, char** argv)
@@ -18,3 +12,4 @@ int main(int argc, char** argv)
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
+

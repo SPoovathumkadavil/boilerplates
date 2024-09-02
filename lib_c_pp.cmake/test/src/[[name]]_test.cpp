@@ -2,16 +2,9 @@
 #include <gtest/gtest.h>
 #include <string>
 
-TEST(LibTests, TestNameIsRight_Zero)
+TEST(LibTests, FileExistsTest)
 {
-  auto exported = exported_class {};
-  ASSERT_EQ(exported.name(), std::string("[[name]]")); // teehee
-}
-
-TEST(LibTests, TestNameIsRight_One)
-{
-  auto exported = exported_class {};
-  ASSERT_NE(exported.name(), std::string("not [[name]]"));
+  ASSERT_TRUE(std::filesystem::exists("resources/test.txt"));
 }
 
 int main(int argc, char** argv)
@@ -19,3 +12,4 @@ int main(int argc, char** argv)
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
 }
+
