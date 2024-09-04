@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <fetalib/directories.hpp>
+#include <fetalib/files/directories.hpp>
 
 /**
  * @brief The core implementation of the executable
@@ -20,5 +20,5 @@ struct library
 
   std::string _name;
   bool _test;
-  std::directories _feta_dir; // project directories accesable through proj_dirs() method
+  feta::directories _feta_dir; // project directories accesable through proj_dirs() method
 };

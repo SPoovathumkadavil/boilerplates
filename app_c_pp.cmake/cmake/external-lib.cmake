@@ -14,7 +14,7 @@ FetchContent_Declare(
   GIT_TAG master
 )
 FetchContent_MakeAvailable(fetalib)
-target_link_libraries([[name]]_lib fetalib::fetalib)
+target_link_libraries([[name]]_lib fetalib::files)
 
 # ---- raylib ----
 # FetchContent_Declare(

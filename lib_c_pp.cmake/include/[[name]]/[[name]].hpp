@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <fetalib/directories.hpp>
+#include <fetalib/files/directories.hpp>
 
 #include "[[name]]/[[name]]_export.hpp"
 
