@@ -5,4 +5,4 @@
 
 #include "lib.hpp"
 
-auto main() -> int;
+int main(int argc, char **argv);

@@ -38,8 +38,8 @@ jobs:
     # edit the "<name>" placeholder to your GitHub name.
     # If you do not wish to use codecov, then simply delete this job from the
     # workflow.
-    if: github.repository_owner == '<name>'
-      && false
+    if: github.repository_owner == 'SPoovathumkadavil'
+    #  && false
 
     steps:
     - uses: actions/checkout@v4
@@ -103,12 +103,6 @@ jobs:
       matrix:
         os: [macos-14, ubuntu-22.04]
 
-        type: [shared, static]
-
-        include:
-        - { type: shared, shared: YES }
-        - { type: static, shared: NO }
-
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -132,11 +126,6 @@ jobs:
     - name: Configure
       shell: pwsh
       run: cmake "--preset=ci-$("${{ matrix.os }}".split("-")[0])"
-        -D BUILD_SHARED_LIBS=${{ matrix.shared }}
-
-    - name: Setup PATH
-      if: matrix.os == 'windows-2022' && matrix.type == 'shared'
-      run: Add-Content "$env:GITHUB_PATH" "$(Get-Location)\build\Release"
 
     - name: Build
       run: cmake --build build --config Release -j 2
@@ -165,10 +154,9 @@ jobs:
     # this comment and the last line in the conditional below.
     # If you do not wish to use GitHub Pages for deploying documentation, then
     # simply delete this job similarly to the coverage one.
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
       && github.event_name == 'push'
-      && github.repository_owner == '<name>'
-      && false
+      && github.repository_owner == 'SPoovathumkadavil'
 
     permissions:
       contents: write

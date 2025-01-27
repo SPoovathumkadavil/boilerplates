@@ -19,6 +19,6 @@ struct library
   library();
 
   std::string _name;
-  bool _test;
+  bool _test = false;
   feta::directories _feta_dir; // project directories accesable through proj_dirs() method
 };
